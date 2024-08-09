@@ -6,6 +6,7 @@ import numpy as np
 from osgeo import gdal
 from tqdm import tqdm
 import pandas as pd
+from multiprocessing import Pool
 
 LUT = [
     {"color": "#db0e9a", "class": "building"},
@@ -83,11 +84,14 @@ def convert_msk(input_path, output_path):
 
 def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\ocs\\dataset\\dp014_V1-2_FLAIR19_RVBIE',
                                    output_path='D:\data\PixtoPix_FLAIR',max_number_img=20,
-                                   path_csv_files='D:\data\FLAIR-INC'):
+                                   path_csv_files='D:\data\FLAIR-INC',no_multiprocessing=False):
     """
     Create folder /path/to/data with subfolders A and B. A and B should each have their own subfolders train, val, test, etc. 
     In /path/to/data/A/train, put training images in style A. In /path/to/data/B/train, put the corresponding images in style B.
     Repeat same for other data splits (val, test, etc)."""
+
+    if not no_multiprocessing:
+        pool=Pool()
 
     path_train_A = os.path.join('A','train')
     path_train_B = os.path.join('B','train')
@@ -119,10 +123,7 @@ def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\
 
         if number_image > max_number_img:
             break
-        print(number_image,img)
-        basename = os.path.basename(img)
         filename_img = os.path.basename(img).split('.')[0]
-        filename_msk = os.path.basename(msk).split('.')[0]
 
         #number = filename_img.split('_')[1]
         if img in list_test_img: 
@@ -142,12 +143,17 @@ def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\
         #percentages_out = f"{base_dir}/PCT_{number}.json"
 
         #meta = metadata[filename_img]
-
-        convert_seg(msk, mask_out, LUT)
-        convert_image(img, image_out)
+        if not no_multiprocessing:
+            pool.apply_async(convert_seg, args=(msk, mask_out, LUT))
+            pool.apply_async(convert_image, args=(img, image_out))
+        else:
+            convert_seg(msk, mask_out, LUT)
+            convert_image(img, image_out)
         number_image += 1
 
-
+    if not no_multiprocessing:
+        pool.close()
+        pool.join()
 
 
 def copy_files_format_for_pix2pix(path_dataset='\\\\store\\store-DAI\\projets\\ocs\\dataset\\dp014_V1-2_FLAIR19_RVBIE',output_path='D:\data\PixtoPix_FLAIR',max_number_img=2):
