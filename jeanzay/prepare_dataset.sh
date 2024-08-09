@@ -21,6 +21,7 @@
 #SBATCH --time=00:10:00              # temps maximum d'execution demande (HH:MM:SS)
 #SBATCH --output=gpu_mono%j.out      # nom du fichier de sortie
 #SBATCH --error=gpu_mono%j.out       # nom du fichier d'erreur (ici commun avec la sortie)
+#SBATCH --account=abj@v100
  
 # Nettoyage des modules charges en interactif et herites par defaut
 module purge
