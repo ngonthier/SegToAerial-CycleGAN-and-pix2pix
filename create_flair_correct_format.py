@@ -84,7 +84,8 @@ def convert_msk(input_path, output_path):
 
 def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\ocs\\dataset\\dp014_V1-2_FLAIR19_RVBIE',
                                    output_path='D:\data\PixtoPix_FLAIR',max_number_img=20,
-                                   path_csv_files='D:\data\FLAIR-INC',no_multiprocessing=False):
+                                   path_csv_files='D:\data\FLAIR-INC',no_multiprocessing=False,
+                                   not_redo=True):
     """
     Create folder /path/to/data with subfolders A and B. A and B should each have their own subfolders train, val, test, etc. 
     In /path/to/data/A/train, put training images in style A. In /path/to/data/B/train, put the corresponding images in style B.
@@ -141,6 +142,11 @@ def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\
         image_out = f"{base_dir_B}/{filename_img}.png"
         #json_out = f"{base_dir}/{number}.json" # can be used for the prompt of pix2pixTurbo non ? 
         #percentages_out = f"{base_dir}/PCT_{number}.json"
+
+        if not_redo: 
+            if os.path.isfile(mask_out) and os.path.isfile(image_out):
+                number_image += 1
+                continue
 
         #meta = metadata[filename_img]
         if not no_multiprocessing:
