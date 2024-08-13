@@ -7,6 +7,7 @@ from osgeo import gdal
 from tqdm import tqdm
 import pandas as pd
 from multiprocessing import Pool
+import ntpath
 
 LUT = [
     {"color": "#db0e9a", "class": "building"},
@@ -30,7 +31,9 @@ LUT = [
     {"color": "#000000", "class": "other"}
 ]
 
-
+def path_leaf(path):
+    head, tail = ntpath.split(path)
+    return tail or ntpath.basename(head)
 
 def convert_to_seg(image_array, lut):
     def hex_to_tuple(hex):
@@ -106,6 +109,7 @@ def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\
     test_set['img'] = test_set['img'].apply(lambda x: x.split('/')[-1])
     test_set['img'] = test_set['img'].apply(lambda x: x.split('.')[0])
     list_test_img = test_set['img'].to_list()
+    print('list_test_img',list_test_img)
 
     pathlib.Path(os.path.join(output_path,path_train_A)).mkdir(parents=True, exist_ok=True)
     pathlib.Path(os.path.join(output_path,path_train_B)).mkdir(parents=True, exist_ok=True)
@@ -115,19 +119,23 @@ def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\
     mask_tif = glob.glob(os.path.join(path_dataset,"*","*","msk","*.tif"))
 
     number_image = 0
+    number_test_img = 0
     print('Number of images :',len(aerial_tif))
 
     for img, msk in tqdm(zip(aerial_tif, mask_tif)):
-        
+        print(img)
         if "D032_2016" in img: # Zone a ignorer 
             continue
 
         if number_image > max_number_img:
             break
         filename_img = os.path.basename(img).split('.')[0]
+        img_short = path_leaf(img).split('.')[0]
 
         #number = filename_img.split('_')[1]
-        if img in list_test_img: 
+        if img_short in list_test_img: 
+            print('test image : ',img)
+            number_test_img += 1 
             folder_A = path_test_A
             folder_B = path_test_B
         else:
@@ -143,23 +151,26 @@ def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\
         #json_out = f"{base_dir}/{number}.json" # can be used for the prompt of pix2pixTurbo non ? 
         #percentages_out = f"{base_dir}/PCT_{number}.json"
 
-        if not_redo: 
-            if os.path.isfile(mask_out) and os.path.isfile(image_out):
-                number_image += 1
-                continue
+        #if not_redo: 
+        #    if os.path.isfile(mask_out) and os.path.isfile(image_out):
+        #        number_image += 1
+        #        continue
 
         #meta = metadata[filename_img]
-        if not no_multiprocessing:
-            pool.apply_async(convert_seg, args=(msk, mask_out, LUT))
-            pool.apply_async(convert_image, args=(img, image_out))
-        else:
-            convert_seg(msk, mask_out, LUT)
-            convert_image(img, image_out)
+        #if not no_multiprocessing:
+        #    pool.apply_async(convert_seg, args=(msk, mask_out, LUT))
+        #    pool.apply_async(convert_image, args=(img, image_out))
+        #else:
+        #    convert_seg(msk, mask_out, LUT)
+        #    convert_image(img, image_out)
         number_image += 1
 
     if not no_multiprocessing:
         pool.close()
         pool.join()
+
+    print('Number of images in test set',number_test_img)
+    print('Number of images in total',number_image)
 
 
 def copy_files_format_for_pix2pix(path_dataset='\\\\store\\store-DAI\\projets\\ocs\\dataset\\dp014_V1-2_FLAIR19_RVBIE',output_path='D:\data\PixtoPix_FLAIR',max_number_img=2):
@@ -211,7 +222,7 @@ def copy_files_format_for_pix2pix(path_dataset='\\\\store\\store-DAI\\projets\\o
 if __name__ == '__main__':  
 
     #copy_files_format_for_pix2pix()
-    #convert_dataset_pix2pix_format()
-    convert_dataset_pix2pix_format(path_dataset='/gpfsscratch/rech/tel/commun/dataset_ocs/dp014_V1-2_FLAIR19_RVBIE',
-                                   output_path='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR',max_number_img=20000000000,
-                                   path_csv_files='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/FLAIR-INC')
+    convert_dataset_pix2pix_format(no_multiprocessing=True,max_number_img=2000000)
+    #convert_dataset_pix2pix_format(path_dataset='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/dp014_V1-2_FLAIR19_RVBIE',
+    #                               output_path='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR',max_number_img=20000000000,
+    #                               path_csv_files='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/FLAIR-INC')
