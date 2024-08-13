@@ -149,20 +149,18 @@ def convert_dataset_pix2pix_format(path_dataset='\\\\store\\store-DAI\\projets\\
         mask_out = f"{base_dir_A}/{filename_img}.png"
         image_out = f"{base_dir_B}/{filename_img}.png"
         #json_out = f"{base_dir}/{number}.json" # can be used for the prompt of pix2pixTurbo non ? 
-        #percentages_out = f"{base_dir}/PCT_{number}.json"
 
-        #if not_redo: 
-        #    if os.path.isfile(mask_out) and os.path.isfile(image_out):
-        #        number_image += 1
-        #        continue
+        if not_redo: 
+            if os.path.isfile(mask_out) and os.path.isfile(image_out):
+                number_image += 1
+                continue
 
-        #meta = metadata[filename_img]
-        #if not no_multiprocessing:
-        #    pool.apply_async(convert_seg, args=(msk, mask_out, LUT))
-        #    pool.apply_async(convert_image, args=(img, image_out))
-        #else:
-        #    convert_seg(msk, mask_out, LUT)
-        #    convert_image(img, image_out)
+        if not no_multiprocessing:
+            pool.apply_async(convert_seg, args=(msk, mask_out, LUT))
+            pool.apply_async(convert_image, args=(img, image_out))
+        else:
+            convert_seg(msk, mask_out, LUT)
+            convert_image(img, image_out)
         number_image += 1
 
     if not no_multiprocessing:
