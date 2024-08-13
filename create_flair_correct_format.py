@@ -220,7 +220,7 @@ def copy_files_format_for_pix2pix(path_dataset='\\\\store\\store-DAI\\projets\\o
 if __name__ == '__main__':  
 
     #copy_files_format_for_pix2pix()
-    convert_dataset_pix2pix_format(no_multiprocessing=True,max_number_img=2000000)
-    #convert_dataset_pix2pix_format(path_dataset='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/dp014_V1-2_FLAIR19_RVBIE',
-    #                               output_path='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR',max_number_img=20000000000,
-    #                               path_csv_files='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/FLAIR-INC')
+    #convert_dataset_pix2pix_format(no_multiprocessing=True,max_number_img=2000000)
+    convert_dataset_pix2pix_format(path_dataset='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/dp014_V1-2_FLAIR19_RVBIE',
+                                   output_path='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR',max_number_img=20000000000,
+                                   path_csv_files='/lustre/fsn1/projects/rech/abj/ujq24es/dataset/FLAIR-INC')
