@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=gpu_mono_pix2pix          # nom du job
+#SBATCH --job-name=gpu_a100_pix2pix          # nom du job
 # Il est possible d'utiliser une autre partition que celle par défaut
 # en activant l'une des 5 directives suivantes :
 ##SBATCH -C v100-16g                 # decommenter pour reserver uniquement des GPU V100 16 Go
@@ -19,8 +19,8 @@
 # /!\ Attention, "multithread" fait reference à l'hyperthreading dans la terminologie Slurm
 #SBATCH --hint=nomultithread         # hyperthreading desactive
 #SBATCH --time=20:00:00              # temps maximum d'execution demande (HH:MM:SS)
-#SBATCH --output=pix2pix_a100_%j.out      # nom du fichier de sortie
-#SBATCH --error=pix2pix_a100_%j.err       # nom du fichier d'erreur (ici commun avec la sortie)
+#SBATCH --output=jz/pix2pix_a100_%j.out      # nom du fichier de sortie
+#SBATCH --error=jz/pix2pix_a100_%j.err       # nom du fichier d'erreur (ici commun avec la sortie)
 #SBATCH --account=abj@a100
 #SBATCH --mail-user=nicolas.gonthier@ign.fr
 #SBATCH --mail-type=END,FAIL
@@ -30,7 +30,7 @@ module purge
  
 # Decommenter la commande module suivante si vous utilisez la partition "gpu_p5"
 # pour avoir acces aux modules compatibles avec cette partition
-#module load cpuarch/amd
+module load cpuarch/amd
  
 # Chargement des modules
 module load pytorch-gpu/py3/1.7.1
@@ -41,4 +41,4 @@ set -x
 # Pour la partition "gpu_p5", le code doit etre compile avec les modules compatibles
 # Execution du code
 # python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --n_epochs 1 --n_epochs_decay 1 --verbose --batch_size 32
-python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --batch_size 64
+python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix_a100 --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --batch_size 64
