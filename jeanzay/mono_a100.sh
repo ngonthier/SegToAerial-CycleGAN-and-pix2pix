@@ -33,7 +33,7 @@ module purge
 module load cpuarch/amd
  
 # Chargement des modules
-module load pytorch-gpu/py3/1.7.1
+module load pytorch-gpu/py3/1.11.0
  
 # Echo des commandes lancees
 set -x
