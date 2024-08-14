@@ -21,7 +21,7 @@
 #SBATCH --time=20:00:00              # temps maximum d'execution demande (HH:MM:SS)
 #SBATCH --output=pix2pix_a100_%j.out      # nom du fichier de sortie
 #SBATCH --error=pix2pix_a100_%j.err       # nom du fichier d'erreur (ici commun avec la sortie)
-#SBATCH --account=abj@v100
+#SBATCH --account=abj@a100
 #SBATCH --mail-user=nicolas.gonthier@ign.fr
 #SBATCH --mail-type=END,FAIL
 
