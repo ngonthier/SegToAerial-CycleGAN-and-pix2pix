@@ -89,8 +89,8 @@ class JeanZayExperiment:
 #SBATCH --cpus-per-task={self.cpus_per_task}
 #SBATCH --hint=nomultithread
 #SBATCH --time={self.time}
-#SBATCH --output=/gpfswork/rech/fau/ujq24es/crossmodal/{local_slurmfolder}/job_%j.out
-#SBATCH --error=/gpfswork/rech/fau/ujq24es/crossmodal/{local_slurmfolder}/job_%j.err
+#SBATCH --output=/lustre/fswork/projects/rech/abj/ujq24es/crossmodal/{local_slurmfolder}/job_%j.out
+#SBATCH --error=/lustre/fswork/projects/rech/abj/ujq24es/crossmodal/{local_slurmfolder}/job_%j.err
 #SBATCH --signal=SIGUSR1@20
 source ~/.bashrc
 module purge

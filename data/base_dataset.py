@@ -78,7 +78,7 @@ def get_params(opt, size):
     return {'crop_pos': (x, y), 'flip': flip}
 
 
-def get_transform(opt, params=None, grayscale=False, method=transforms.InterpolationMode.BICUBIC, convert=True):
+def get_transform(opt, params=None, grayscale=False, method=Image.BICUBIC, convert=True):
     transform_list = []
     if grayscale:
         transform_list.append(transforms.Grayscale(1))
@@ -120,7 +120,7 @@ def __transforms2pil_resize(method):
     return mapper[method]
 
 
-def __make_power_2(img, base, method=transforms.InterpolationMode.BICUBIC):
+def __make_power_2(img, base, method=Image.BICUBIC):
     method = __transforms2pil_resize(method)
     ow, oh = img.size
     h = int(round(oh / base) * base)
@@ -132,7 +132,7 @@ def __make_power_2(img, base, method=transforms.InterpolationMode.BICUBIC):
     return img.resize((w, h), method)
 
 
-def __scale_width(img, target_size, crop_size, method=transforms.InterpolationMode.BICUBIC):
+def __scale_width(img, target_size, crop_size, method=Image.BICUBIC):
     method = __transforms2pil_resize(method)
     ow, oh = img.size
     if ow == target_size and oh >= crop_size:
