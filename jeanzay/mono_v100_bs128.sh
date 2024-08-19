@@ -4,9 +4,8 @@
 # en activant l'une des 5 directives suivantes :
 #SBATCH -C v100-16g                 # decommenter pour reserver uniquement des GPU V100 16 Go
 ##SBATCH -C v100-32g                 # decommenter pour reserver uniquement des GPU V100 32 Go
-##SBATCH --partition=gpu_p2          # decommenter pour la partition gpu_p2 (GPU V100 32 Go)
+#SBATCH --partition=gpu_p2          # decommenter pour la partition gpu_p2 (GPU V100 32 Go)
 ##SBATCH -C a100                     # decommenter pour la partition gpu_p5 (GPU A100 80 Go)
-#SBATCH --qos=qos_gpu-t4 # to get 100h time limit
 # Ici, reservation de 10 CPU (pour 1 tache) et d'un GPU sur un seul noeud :
 #SBATCH --nodes=1                    # on demande un noeud
 #SBATCH --ntasks-per-node=1          # avec une tache par noeud (= nombre de GPU ici)
@@ -42,4 +41,4 @@ set -x
 # Pour la partition "gpu_p5", le code doit etre compile avec les modules compatibles
 # Execution du code
 # python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --n_epochs 1 --n_epochs_decay 1 --verbose --batch_size 32
-python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix_v100 --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --batch_size 64
+python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix_v100_bs128 --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --batch_size 128 --netG unet_256 --lambda_L1 100 --norm batch --pool_size 0 ----print_freq 10000 --update_html_freq 100000 --save_latest_freq 500000
