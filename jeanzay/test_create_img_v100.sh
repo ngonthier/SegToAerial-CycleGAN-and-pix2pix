@@ -6,7 +6,6 @@
 ##SBATCH -C v100-32g                 # decommenter pour reserver uniquement des GPU V100 32 Go
 ##SBATCH --partition=gpu_p2          # decommenter pour la partition gpu_p2 (GPU V100 32 Go)
 ##SBATCH -C a100                     # decommenter pour la partition gpu_p5 (GPU A100 80 Go)
-#SBATCH --qos=qos_gpu-t4 # to get 100h time limit
 # Ici, reservation de 10 CPU (pour 1 tache) et d'un GPU sur un seul noeud :
 #SBATCH --nodes=1                    # on demande un noeud
 #SBATCH --ntasks-per-node=1          # avec une tache par noeud (= nombre de GPU ici)
@@ -19,9 +18,9 @@
 ##SBATCH --cpus-per-task=8           # nombre de CPU par tache pour gpu_p5 (1/8 des CPU du noeud 8-GPU)
 # /!\ Attention, "multithread" fait reference à l'hyperthreading dans la terminologie Slurm
 #SBATCH --hint=nomultithread         # hyperthreading desactive
-#SBATCH --time=80:00:00              # temps maximum d'execution demande (HH:MM:SS)
-#SBATCH --output=jz/pix2pix_v100_%j.out      # nom du fichier de sortie
-#SBATCH --error=jz/pix2pix_v100_%j.err       # nom du fichier d'erreur (ici commun avec la sortie)
+#SBATCH --time=15:00:00              # temps maximum d'execution demande (HH:MM:SS)
+#SBATCH --output=jz/results_pix2pix_v100_%j.out      # nom du fichier de sortie
+#SBATCH --error=jz/results_pix2pix_v100_%j.err       # nom du fichier d'erreur (ici commun avec la sortie)
 #SBATCH --account=abj@v100
 #SBATCH --mail-user=nicolas.gonthier@ign.fr
 #SBATCH --mail-type=END,FAIL
