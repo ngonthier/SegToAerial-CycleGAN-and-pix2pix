@@ -9,11 +9,13 @@ import json
 import torch_fidelity
 import pathlib
 import shutil
+import os
+from options.test_options import TestOptions
+from data import create_dataset
+from models import create_model
+from util.visualizer import save_images
+from util import html
 
-
-"""
-This code is based on https://github.com/Mid-Push/Decent/
-"""
 
 def create_folder_per_modality(path_results='\results\flair_pix2pix\test_latest\images'):
     fakes = glob.glob(os.path.join(path_results, '*_fake_B.png'))
@@ -55,8 +57,8 @@ def eval_pix2pix(method, path):
 def parse_args():
     # Training settings
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--path', type=str, help='path to the generated and gt images')
-    parser.add_argument('--output_path', type=str, help='path to save the evaluation results', default='.')
+    parser.add_argument('--path', type=str, help='path to the generated and gt images', default='output_images')
+    parser.add_argument('--output_path', type=str, help='path to save the evaluation results', default='results')
     parser.add_argument('--dataset', type=str, default='FLAIR')
     parser.add_argument('--method', type=str, default='pix2pix')
     parser.add_argument('--gpu', type=str, default='0')
@@ -70,7 +72,7 @@ def main():
     args = parse_args()
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
     eval_metrics = eval_pix2pix(args.method, args.path)
-    with open(os.path.join(args.output_path, args.dataset + '_result.json'), 'w') as fp:
+    with open(os.path.join(args.output_path,args.method + '_' + args.dataset + '_result.json'), 'w') as fp:
         json.dump(eval_metrics, fp)
     
 
