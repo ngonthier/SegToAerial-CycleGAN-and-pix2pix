@@ -42,4 +42,4 @@ set -x
 # Pour la partition "gpu_p5", le code doit etre compile avec les modules compatibles
 # Execution du code
 # python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --n_epochs 1 --n_epochs_decay 1 --verbose --batch_size 32
-python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix_v100 --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --batch_size 64  --continue_train --epoch_count 134
+python train.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --name flair_pix2pix_v100 --model pix2pix --direction AtoB --display_id -1 --dataset_mode aligned --batch_size 64 --continue_train --epoch_count 134
