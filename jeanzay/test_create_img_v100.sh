@@ -18,7 +18,7 @@
 ##SBATCH --cpus-per-task=8           # nombre de CPU par tache pour gpu_p5 (1/8 des CPU du noeud 8-GPU)
 # /!\ Attention, "multithread" fait reference à l'hyperthreading dans la terminologie Slurm
 #SBATCH --hint=nomultithread         # hyperthreading desactive
-#SBATCH --time=15:00:00              # temps maximum d'execution demande (HH:MM:SS)
+#SBATCH --time=20:00:00              # temps maximum d'execution demande (HH:MM:SS)
 #SBATCH --output=jz/results_pix2pix_v100_%j.out      # nom du fichier de sortie
 #SBATCH --error=jz/results_pix2pix_v100_%j.err       # nom du fichier d'erreur (ici commun avec la sortie)
 #SBATCH --account=abj@v100
@@ -40,5 +40,5 @@ set -x
  
 # Pour la partition "gpu_p5", le code doit etre compile avec les modules compatibles
 # Execution du code
-python test.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --num_test 50 --name flair_pix2pix_v100 --model pix2pix --direction AtoB --dataset_mode aligned --results_dir /lustre/fsn1/projects/rech/abj/ujq24es/results_inter/
+python test.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --num_test 31750 --name flair_pix2pix_v100 --model pix2pix --direction AtoB --dataset_mode aligned --results_dir /lustre/fsn1/projects/rech/abj/ujq24es/results_inter/
 python evaluate_quant_metrics.py --path /lustre/fsn1/projects/rech/abj/ujq24es/results_inter/flair_pix2pix_v100/test_latest/images/ --method flair_pix2pix_v100 --output_path /lustre/fsn1/projects/rech/abj/ujq24es/results_pix2pix

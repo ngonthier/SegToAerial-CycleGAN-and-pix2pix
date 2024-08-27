@@ -42,7 +42,7 @@ def eval_pix2pix(method, path):
     eval_dict = { 'method': method}
 
     # 'kid_subset_size': 50, 'kid_subsets': 10 pour le vrai cas 
-    eval_args = {'isc': True, 'fid': True, 'kid': True, 'kid_subset_size': 1, 'kid_subsets': 1, 'verbose': False, 'cuda': True}
+    eval_args = {'isc': True, 'fid': True, 'kid': True, 'kid_subset_size': 50, 'kid_subsets': 10, 'verbose': True, 'cuda': True}
     metric_dict_AB = torch_fidelity.calculate_metrics(input1=real_path, input2=fake_path, **eval_args)
     print('metric_dict_AB',metric_dict_AB)
     eval_dict['ISC'] = metric_dict_AB['inception_score_mean']
