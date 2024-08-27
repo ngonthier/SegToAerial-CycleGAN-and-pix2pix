@@ -72,6 +72,7 @@ def main():
     args = parse_args()
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
     eval_metrics = eval_pix2pix(args.method, args.path)
+    pathlib.Path(os.path.join(args.output_path)).mkdir(parents=True, exist_ok=True)
     with open(os.path.join(args.output_path,args.method + '_' + args.dataset + '_result.json'), 'w') as fp:
         json.dump(eval_metrics, fp)
     
