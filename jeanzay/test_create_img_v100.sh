@@ -40,5 +40,5 @@ set -x
  
 # Pour la partition "gpu_p5", le code doit etre compile avec les modules compatibles
 # Execution du code
-python test.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --num_test 50 --name flair_pix2pix_v100 --model pix2pix --direction AtoB --dataset_mode aligned --results_dir './lustre/fsn1/projects/rech/abj/ujq24es/results_inter/'
-python evaluate_quant_metrics.py --path '/lustre/fsn1/projects/rech/abj/ujq24es/results_inter/flair_pix2pix_v100/test_latest/images/' --method flair_pix2pix_v100 --output_path /lustre/fsn1/projects/rech/abj/ujq24es/results_pix2pix
+python test.py --dataroot /lustre/fsn1/projects/rech/abj/ujq24es/dataset/PixtoPix_FLAIR --num_test 50 --name flair_pix2pix_v100 --model pix2pix --direction AtoB --dataset_mode aligned --results_dir /lustre/fsn1/projects/rech/abj/ujq24es/results_inter/
+python evaluate_quant_metrics.py --path /lustre/fsn1/projects/rech/abj/ujq24es/results_inter/flair_pix2pix_v100/test_latest/images/ --method flair_pix2pix_v100 --output_path /lustre/fsn1/projects/rech/abj/ujq24es/results_pix2pix
